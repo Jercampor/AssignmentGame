@@ -29,35 +29,40 @@ public class PlayerShooting : MonoBehaviour
 
     public int maxAmmo = 10;
     private int currentAmmo;
+    public int maxReserveAmmo = 30;
+    private int reserveAmmo;
     public float reloadTime = 1.5f;
     private bool isReloading = false;
 
     public TextMeshProUGUI ammoText;
+    private PlayerController playerController;
 
     void Start()
     {
         currentAmmo = maxAmmo;
+        reserveAmmo = maxReserveAmmo;
         UpdateAmmoUI();
+        playerController = GetComponent<PlayerController>();
     }
 
     void Update()
     {
         if (isReloading) return;
 
-        if (currentAmmo <= 0)
+        if (Input.GetMouseButtonDown(0) && !playerController.isMeleeMode)
         {
-            StartCoroutine(Reload());
-            return;
+            if (currentAmmo > 0)
+                Shoot();
+            else
+                ammoText.text = "No ammo! Press R to reload";
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading)
         {
-            Shoot();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine(Reload());
+            if (reserveAmmo > 0 && currentAmmo < maxAmmo)
+                StartCoroutine(Reload());
+            else if (reserveAmmo <= 0)
+                ammoText.text = "No reserve ammo!";
         }
     }
 
@@ -75,19 +80,22 @@ public class PlayerShooting : MonoBehaviour
         isReloading = true;
         ammoText.text = "Reloading...";
         yield return new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
+        int ammoNeeded = maxAmmo - currentAmmo;
+        int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo);
+        currentAmmo += ammoToReload;
+        reserveAmmo -= ammoToReload;
         isReloading = false;
         UpdateAmmoUI();
     }
 
     public void AddAmmo(int amount)
     {
-        currentAmmo = Mathf.Min(currentAmmo + amount, maxAmmo);
+        reserveAmmo = Mathf.Min(reserveAmmo + amount, maxReserveAmmo);
         UpdateAmmoUI();
     }
 
     void UpdateAmmoUI()
     {
-        ammoText.text = "Ammo: " + currentAmmo + " / " + maxAmmo;
+        ammoText.text = "Ammo: " + currentAmmo + " / " + reserveAmmo;
     }
 }

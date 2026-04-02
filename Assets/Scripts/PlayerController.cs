@@ -3,25 +3,24 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public float dashRechargeTime = 5f;
-    private float dashRechargeTimer = 0f;
     public float moveSpeed = 5f;
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 0.5f;
     public int ammoRewardPerKill = 3;
     public int maxDashCharges = 2;
+    public float dashRechargeTime = 5f;
 
     private int currentDashCharges;
+    private float dashRechargeTimer = 0f;
     private Rigidbody rb;
     private bool isDashing = false;
     private float dashCooldownTimer = 0f;
-    private bool isMeleeMode = false;
+    public bool isMeleeMode = false;
     private PlayerShooting playerShooting;
 
     public TextMeshProUGUI dashText;
     public TextMeshProUGUI modeText;
-
 
     void Start()
     {
@@ -36,20 +35,28 @@ public class PlayerController : MonoBehaviour
     {
         dashCooldownTimer -= Time.deltaTime;
 
-        // melee toggle
+        if (currentDashCharges < maxDashCharges)
+        {
+            dashRechargeTimer += Time.deltaTime;
+            if (dashRechargeTimer >= dashRechargeTime)
+            {
+                currentDashCharges++;
+                dashRechargeTimer = 0f;
+                UpdateDashUI();
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             isMeleeMode = !isMeleeMode;
             modeText.text = isMeleeMode ? "Mode: Melee" : "Mode: Gun";
         }
 
-        // dash button
         if (Input.GetKeyDown(KeyCode.Q) && dashCooldownTimer <= 0f && !isDashing && currentDashCharges > 0)
         {
             StartCoroutine(Dash());
         }
 
-        // dash
         if (!isDashing)
         {
             float x = Input.GetAxisRaw("Horizontal");
@@ -66,23 +73,10 @@ public class PlayerController : MonoBehaviour
             if (lookDir != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(lookDir);
         }
-        
-        if (currentDashCharges < maxDashCharges)
-        {
-            dashRechargeTimer += Time.deltaTime;
-            if (dashRechargeTimer >= dashRechargeTime)
-            {
-                currentDashCharges++;
-                dashRechargeTimer = 0f;
-                UpdateDashUI();
-            }
-        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Hit: " + collision.gameObject.name + " isDashing: " + isDashing + " isMeleeMode: " + isMeleeMode);
-
         if (isDashing && isMeleeMode)
         {
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
@@ -108,7 +102,7 @@ public class PlayerController : MonoBehaviour
         UpdateDashUI();
         dashCooldownTimer = dashCooldown;
         rb.linearVelocity = transform.forward * dashSpeed;
-        yield return new WaitForSeconds(dashDuration + 0.1f); 
+        yield return new WaitForSeconds(dashDuration + 0.1f);
         isDashing = false;
     }
 }
