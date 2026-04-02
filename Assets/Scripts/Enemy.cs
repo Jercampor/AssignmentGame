@@ -1,14 +1,20 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public int health = 3;
+    public int maxHealth = 3;
+    private int health;
     public float moveSpeed = 2f;
     private Transform player;
+    public Slider healthBar;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+        health = maxHealth;
+        healthBar.maxValue = maxHealth;
+        healthBar.value = health;
     }
 
     void Update()
@@ -19,6 +25,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        healthBar.value = health;
         if (health <= 0)
         {
             GameManager.instance.AddScore(10);
