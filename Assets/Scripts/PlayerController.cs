@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private int currentDashCharges;
     private float dashRechargeTimer = 0f;
     private Rigidbody rb;
-    private bool isDashing = false;
+    public bool isDashing = false;
     private float dashCooldownTimer = 0f;
     public bool isMeleeMode = false;
     private PlayerShooting playerShooting;
@@ -82,10 +82,13 @@ public class PlayerController : MonoBehaviour
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(9999);
-                playerShooting.AddAmmo(ammoRewardPerKill);
-                currentDashCharges = Mathf.Min(currentDashCharges + 1, maxDashCharges);
-                UpdateDashUI();
+                if (!enemy.immuneToDash)
+                {
+                    enemy.TakeDamage(9999);
+                    playerShooting.AddAmmo(ammoRewardPerKill);
+                    currentDashCharges = Mathf.Min(currentDashCharges + 1, maxDashCharges);
+                    UpdateDashUI();
+                }
             }
         }
     }

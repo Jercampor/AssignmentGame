@@ -7,7 +7,8 @@ public class Enemy : MonoBehaviour
     public int maxHealth = 3;
     private int health;
     public float moveSpeed = 2f;
-    private Transform player;
+    public bool immuneToDash = false;
+    private Transform player; 
     public Slider healthBar;
 
     void Start()
