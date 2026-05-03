@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    public int damage = 1;
     public int maxHealth = 3;
     private int health;
     public float moveSpeed = 2f;
@@ -30,6 +31,14 @@ public class Enemy : MonoBehaviour
         {
             GameManager.instance.AddScore(10);
             Destroy(gameObject);
+        }
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
         }
     }
 }
