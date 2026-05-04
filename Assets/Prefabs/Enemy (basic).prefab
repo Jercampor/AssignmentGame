@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7382367317420414527}
   - component: {fileID: 2480829477706872021}
   - component: {fileID: 7672133878996401027}
+  - component: {fileID: 8499530669383999675}
   m_Layer: 0
   m_Name: Enemy (basic)
   m_TagString: Untagged
@@ -69,9 +70,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa99324e7ff437418fbe02bcb9f6cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  damage: 1
   maxHealth: 3
   moveSpeed: 2
+  immuneToDash: 0
   healthBar: {fileID: 5014670111746525964}
+  separationDistance: 1.5
+  separationForce: 2
+--- !u!54 &8499530669383999675
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216195066414324864}
+  serializedVersion: 5
+  m_Mass: 100
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &2512173347341170187
 GameObject:
   m_ObjectHideFlags: 0
