@@ -25,6 +25,7 @@ public class ShooterEnemy : MonoBehaviour
         health = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = health;
+        damageTimer = damageCooldown;
         
         rb = GetComponent<Rigidbody>();
     }
@@ -84,11 +85,27 @@ public class ShooterEnemy : MonoBehaviour
         }
     }
 
+    private float damageTimer = 0f;
+    public float damageCooldown = 1f;
+
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            damageTimer += Time.deltaTime;
+            if (damageTimer >= damageCooldown)
+            {
+                collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
+                damageTimer = 0f;
+            }
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
+            damageTimer = damageCooldown;
         }
     }
 }
