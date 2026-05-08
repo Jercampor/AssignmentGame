@@ -98,4 +98,11 @@ public class PlayerShooting : MonoBehaviour
     {
         ammoText.text = "Ammo: " + currentAmmo + " / " + reserveAmmo;
     }
+    
+    private PowerUpType? activePowerUp = null;
+
+    public void SetPowerUp(PowerUpType? type)
+    {
+        activePowerUp = type;
+    }
 }

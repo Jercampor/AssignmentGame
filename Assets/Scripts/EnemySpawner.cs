@@ -2,12 +2,36 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner instance;
+
     public GameObject basicEnemy;
     public GameObject fastEnemy;
     public GameObject tankyEnemy;
     public GameObject shooterEnemy;
     public float spawnInterval = 2f;
+    public float minimumSpawnInterval = 0.3f;
+    public float spawnIntervalDecrease = 0.2f;
     private float timer;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
+    public void IncreaseSpawnRate()
+    {
+        spawnInterval = Mathf.Max(spawnInterval - spawnIntervalDecrease, minimumSpawnInterval);
+        Debug.Log("Spawn rate increased! New interval: " + spawnInterval);
+    }
+
+    GameObject GetRandomEnemy()
+    {
+        int roll = Random.Range(0, 10);
+        if (roll < 4) return basicEnemy;
+        else if (roll < 7) return fastEnemy;
+        else if (roll < 9) return shooterEnemy;
+        else return tankyEnemy;
+    }
 
     void Update()
     {
@@ -17,15 +41,6 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
             timer = 0f;
         }
-    }
-
-    GameObject GetRandomEnemy()
-    {
-        int roll = Random.Range(0, 10);
-        if (roll < 4) return basicEnemy;       // 40% chance
-        else if (roll < 7) return fastEnemy;   // 30% chance
-        else if (roll < 9) return shooterEnemy; // 20% chance
-        else return tankyEnemy;                // 10% chance
     }
 
     void SpawnEnemy()

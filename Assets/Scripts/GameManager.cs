@@ -9,14 +9,15 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI waveText;
     private int score = 0;
-    private float timeRemaining = 120f;
+    private float gameTimer = 0f;
     private bool gameActive = true;
+    private int wave = 1;
 
     public GameObject gameOverPanel;
-    public GameObject winPanel;
     public TextMeshProUGUI gameOverScoreText;
-    public TextMeshProUGUI winScoreText;
+    
 
     void Awake()
     {
@@ -27,13 +28,16 @@ public class GameManager : MonoBehaviour
     {
         if (!gameActive) return;
 
-        timeRemaining -= Time.deltaTime;
-        timerText.text = "Time: " + Mathf.CeilToInt(timeRemaining);
+        gameTimer += Time.deltaTime;
+        timerText.text = "Time: " + Mathf.FloorToInt(gameTimer) + "s";
 
-        if (timeRemaining <= 0)
+        // Every 30 seconds increase wave
+        int newWave = Mathf.FloorToInt(gameTimer / 30f) + 1;
+        if (newWave > wave)
         {
-            timeRemaining = 0;
-            GameOver();
+            wave = newWave;
+            waveText.text = "Wave " + wave;
+            EnemySpawner.instance.IncreaseSpawnRate();
         }
     }
 
@@ -41,11 +45,6 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = "Score: " + score;
-
-        if (score >= 500)
-        {
-            Win();
-        }
     }
 
     public void GameOver()
@@ -54,14 +53,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         gameOverPanel.SetActive(true);
         gameOverScoreText.text = "Score: " + score;
-    }
-
-    public void Win()
-    {
-        gameActive = false;
-        Time.timeScale = 0f;
-        winPanel.SetActive(true);
-        winScoreText.text = "Score: " + score;
     }
 
     public void RestartGame()
