@@ -83,10 +83,13 @@ public class HotbarManager : MonoBehaviour
 
         PowerUpType type = slots[index].powerUpType;
 
-        // Health pack is instant
         if (type == PowerUpType.HealthPack)
         {
             playerHealth.Heal(3);
+        }
+        else if (type == PowerUpType.Grenade)
+        {
+            playerShooting.ThrowGrenade();
         }
         else
         {
@@ -125,13 +128,13 @@ public class HotbarManager : MonoBehaviour
             switch (slots[index].powerUpType)
             {
                 case PowerUpType.Machinegun:
-                    slots[index].slotImage.color = Color.yellow;
+                    slots[index].slotImage.color = Color.purple;
                     break;
                 case PowerUpType.Shotgun:
-                    slots[index].slotImage.color = Color.blue;
+                    slots[index].slotImage.color = Color.deepSkyBlue;
                     break;
                 case PowerUpType.Grenade:
-                    slots[index].slotImage.color = Color.green;
+                    slots[index].slotImage.color = Color.orange;
                     break;
                 case PowerUpType.HealthPack:
                     slots[index].slotImage.color = Color.red;
