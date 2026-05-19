@@ -21,6 +21,10 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI dashText;
     public TextMeshProUGUI modeText;
+    
+    public GameObject gun;
+    public GameObject axe;
+
 
     void Start()
     {
@@ -29,6 +33,8 @@ public class PlayerController : MonoBehaviour
         currentDashCharges = maxDashCharges;
         UpdateDashUI();
         modeText.text = "Mode: Gun";
+        axe.SetActive(false);
+        gun.SetActive(true);
     }
 
     void Update()
@@ -50,6 +56,8 @@ public class PlayerController : MonoBehaviour
         {
             isMeleeMode = !isMeleeMode;
             modeText.text = isMeleeMode ? "Mode: Melee" : "Mode: Gun";
+            gun.SetActive(!isMeleeMode);
+            axe.SetActive(isMeleeMode);
         }
 
         if (Input.GetKeyDown(KeyCode.Q) && dashCooldownTimer <= 0f && !isDashing && currentDashCharges > 0)

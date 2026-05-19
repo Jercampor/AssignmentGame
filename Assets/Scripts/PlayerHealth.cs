@@ -46,4 +46,10 @@ public class PlayerHealth : MonoBehaviour
     {
         GameManager.instance.GameOver();
     }
+    
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
 }
+

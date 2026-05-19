@@ -128,5 +128,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerUp
   powerUpType: 1
-  bobHeight: 0.5
+  bobHeight: 0.2
   bobSpeed: 2

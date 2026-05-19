@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner instance;
+    public int maxEnemies = 30;
 
     public GameObject basicEnemy;
     public GameObject fastEnemy;
@@ -45,6 +46,7 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
+        if (FindObjectsByType<Enemy>(FindObjectsSortMode.None).Length >= maxEnemies) return;
         Vector3 playerPos = GameObject.FindWithTag("Player").transform.position;
         Vector3 spawnPos;
         int side = Random.Range(0, 4);

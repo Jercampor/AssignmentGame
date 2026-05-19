@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    public int scoreValue = 10;
     public int damage = 1;
     public int maxHealth = 3;
     private int health;
@@ -51,7 +52,7 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("Hit");
         if (health <= 0)
         {
-            GameManager.instance.AddScore(10);
+            GameManager.instance.AddScore(scoreValue);
             Destroy(gameObject);
         }
     }

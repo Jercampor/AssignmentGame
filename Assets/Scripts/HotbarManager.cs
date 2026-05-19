@@ -8,6 +8,8 @@ public class HotbarManager : MonoBehaviour
 
     public PlayerHealth playerHealth;
     public PlayerShooting playerShooting;
+    public Slider powerUpTimerSlider;
+    public Image powerUpTimerFill;
 
     [System.Serializable]
     public class HotbarSlot
@@ -36,6 +38,8 @@ public class HotbarManager : MonoBehaviour
             slot.chargeText.text = "";
             slot.slotImage.color = Color.grey;
         }
+        
+        powerUpTimerSlider.gameObject.SetActive(false);
     }
 
     void Update()
@@ -43,6 +47,7 @@ public class HotbarManager : MonoBehaviour
         if (powerUpActive)
         {
             powerUpTimer -= Time.deltaTime;
+            powerUpTimerSlider.value = powerUpTimer / powerUpDuration;
             if (powerUpTimer <= 0f)
                 DeactivatePowerUp();
         }
@@ -85,14 +90,15 @@ public class HotbarManager : MonoBehaviour
     void ActivateSlot(int index)
     {
         if (slots[index].isEmpty) return;
+        
 
         PowerUpType type = slots[index].powerUpType;
 
         // Block activation if a power up is already active (except health and grenade)
-        if (powerUpActive && type != PowerUpType.HealthPack && type != PowerUpType.Grenade)
+        if (type == PowerUpType.HealthPack)
         {
-            Debug.Log("Power up already active!");
-            return;
+            Debug.Log("Healing player! Current health before: " + playerHealth.GetCurrentHealth());
+            playerHealth.Heal(3);
         }
         else if (type == PowerUpType.Grenade)
         {
@@ -103,7 +109,16 @@ public class HotbarManager : MonoBehaviour
             activePowerUp = type;
             powerUpActive = true;
             powerUpTimer = powerUpDuration;
+            powerUpTimerSlider.maxValue = 1f;
+            powerUpTimerSlider.value = 1f;
+            powerUpTimerSlider.gameObject.SetActive(true);
             playerShooting.SetPowerUp(type);
+
+            // Set slider color based on power up type
+            if (type == PowerUpType.Shotgun)
+                powerUpTimerFill.color = Color.cyan;
+            else if (type == PowerUpType.Machinegun)
+                powerUpTimerFill.color = Color.magenta;
         }
 
         slots[index].charges--;
@@ -119,6 +134,7 @@ public class HotbarManager : MonoBehaviour
     void DeactivatePowerUp()
     {
         powerUpActive = false;
+        powerUpTimerSlider.gameObject.SetActive(false);
         playerShooting.SetPowerUp(null);
     }
 

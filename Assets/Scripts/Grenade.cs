@@ -18,20 +18,23 @@ public class Grenade : MonoBehaviour
 
     void Explode()
     {
-        // Visual feedback - temporary explosion sphere
         GameObject explosion = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         explosion.transform.position = transform.position;
         explosion.transform.localScale = Vector3.one * explosionRadius * 2f;
-        explosion.GetComponent<Renderer>().material.color = Color.red;
+
+        Material mat = explosion.GetComponent<Renderer>().material;
+        mat.color = new Color(1f, 0.5f, 0f);
+        mat.EnableKeyword("_EMISSION");
+        mat.SetColor("_EmissionColor", new Color(1f, 0.5f, 0f) * 3f);
+
         Destroy(explosion.GetComponent<Collider>());
         Destroy(explosion, 0.2f);
 
-        // Find all enemies in radius
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider col in colliders)
         {
             Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null && !enemy.immuneToDash)
+            if (enemy != null)
                 enemy.TakeDamage(explosionDamage);
 
             ShooterEnemy shooter = col.GetComponent<ShooterEnemy>();

@@ -83,7 +83,6 @@ public class ShooterEnemy : MonoBehaviour
         animator.SetTrigger("Hit");
         if (health <= 0)
         {
-            GameManager.instance.AddScore(10);
             Destroy(gameObject);
         }
     }

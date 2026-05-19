@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa99324e7ff437418fbe02bcb9f6cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  scoreValue: 5
   damage: 1
   maxHealth: 2
   moveSpeed: 4
