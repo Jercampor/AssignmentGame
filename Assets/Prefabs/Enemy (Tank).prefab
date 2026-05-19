@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7430248524361893544}
   - component: {fileID: 1118382266209767760}
   - component: {fileID: 8029085308491135720}
+  - component: {fileID: 823682703562218151}
   m_Layer: 0
   m_Name: Enemy (Tank)
   m_TagString: Untagged
@@ -77,6 +78,7 @@ MonoBehaviour:
   healthBar: {fileID: 8797616822150633723}
   separationDistance: 1.5
   separationForce: 2
+  damageCooldown: 1
 --- !u!54 &8029085308491135720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -104,6 +106,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!95 &823682703562218151
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437137646468463107}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 961fe133428d27c40b81a329c883d678, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1209712169045431233
 GameObject:
   m_ObjectHideFlags: 0

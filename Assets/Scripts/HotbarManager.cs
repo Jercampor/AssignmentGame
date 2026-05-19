@@ -30,7 +30,12 @@ public class HotbarManager : MonoBehaviour
     {
         instance = this;
         foreach (var slot in slots)
+        {
             slot.isEmpty = true;
+            slot.charges = 0;
+            slot.chargeText.text = "";
+            slot.slotImage.color = Color.grey;
+        }
     }
 
     void Update()
@@ -83,9 +88,11 @@ public class HotbarManager : MonoBehaviour
 
         PowerUpType type = slots[index].powerUpType;
 
-        if (type == PowerUpType.HealthPack)
+        // Block activation if a power up is already active (except health and grenade)
+        if (powerUpActive && type != PowerUpType.HealthPack && type != PowerUpType.Grenade)
         {
-            playerHealth.Heal(3);
+            Debug.Log("Power up already active!");
+            return;
         }
         else if (type == PowerUpType.Grenade)
         {

@@ -18,9 +18,11 @@ public class ShooterEnemy : MonoBehaviour
     public float separationDistance = 1.5f;
     public float separationForce = 2f;
     private Rigidbody rb;
+    private Animator animator;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player").transform;
         health = maxHealth;
         healthBar.maxValue = maxHealth;
@@ -78,6 +80,7 @@ public class ShooterEnemy : MonoBehaviour
     {
         health -= damage;
         healthBar.value = health;
+        animator.SetTrigger("Hit");
         if (health <= 0)
         {
             GameManager.instance.AddScore(10);
