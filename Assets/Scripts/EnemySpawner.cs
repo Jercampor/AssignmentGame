@@ -54,16 +54,16 @@ public class EnemySpawner : MonoBehaviour
         switch (side)
         {
             case 0:
-                spawnPos = new Vector3(playerPos.x + Random.Range(-15f, 15f), 1f, playerPos.z + 20f);
+                spawnPos = new Vector3(playerPos.x + Random.Range(-15f, 15f), 1.3f, playerPos.z + 20f);
                 break;
             case 1:
-                spawnPos = new Vector3(playerPos.x + Random.Range(-15f, 15f), 1f, playerPos.z - 20f);
+                spawnPos = new Vector3(playerPos.x + Random.Range(-15f, 15f), 1.3f, playerPos.z - 20f);
                 break;
             case 2:
-                spawnPos = new Vector3(playerPos.x - 20f, 1f, playerPos.z + Random.Range(-15f, 15f));
+                spawnPos = new Vector3(playerPos.x - 20f, 1.3f, playerPos.z + Random.Range(-15f, 15f));
                 break;
             default:
-                spawnPos = new Vector3(playerPos.x + 20f, 1f, playerPos.z + Random.Range(-15f, 15f));
+                spawnPos = new Vector3(playerPos.x + 20f, 1.3f, playerPos.z + Random.Range(-15f, 15f));
                 break;
         }
 
