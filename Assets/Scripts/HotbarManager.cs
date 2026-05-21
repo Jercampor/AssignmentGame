@@ -10,7 +10,7 @@ public class HotbarManager : MonoBehaviour
     public PlayerShooting playerShooting;
     public Slider powerUpTimerSlider;
     public Image powerUpTimerFill;
-
+    
     [System.Serializable]
     public class HotbarSlot
     {

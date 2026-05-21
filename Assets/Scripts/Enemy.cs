@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public float separationForce = 2f;
     private Rigidbody rb;
     private Animator animator;
+    public ParticleSystem particle;
 
     void Start()
     {
@@ -52,8 +53,11 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("Hit");
         if (health <= 0)
         {
+            ParticleSystem enemydie = Instantiate(particle, transform.position, Quaternion.identity);
+            enemydie.Play();
             GameManager.instance.AddScore(scoreValue);
             Destroy(gameObject);
+            
         }
     }
     

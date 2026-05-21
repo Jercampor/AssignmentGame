@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa99324e7ff437418fbe02bcb9f6cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  scoreValue: 10
   damage: 1
   maxHealth: 3
   moveSpeed: 2
@@ -78,6 +79,7 @@ MonoBehaviour:
   healthBar: {fileID: 5014670111746525964}
   separationDistance: 1.5
   separationForce: 2
+  particle: {fileID: 5660750495147854714, guid: 7c5f4d00f1eea4a449a2a73ec7904b82, type: 3}
   damageCooldown: 1
 --- !u!54 &8499530669383999675
 Rigidbody:

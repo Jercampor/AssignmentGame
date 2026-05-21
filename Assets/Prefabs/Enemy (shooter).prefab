@@ -281,6 +281,7 @@ MonoBehaviour:
   healthBar: {fileID: 7366499909859702226}
   separationDistance: 1.5
   separationForce: 2
+  particle: {fileID: 5660750495147854714, guid: 7c5f4d00f1eea4a449a2a73ec7904b82, type: 3}
   damageCooldown: 1
 --- !u!114 &5138005402508128217
 MonoBehaviour:

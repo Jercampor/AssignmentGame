@@ -79,6 +79,7 @@ MonoBehaviour:
   healthBar: {fileID: 8797616822150633723}
   separationDistance: 1.5
   separationForce: 2
+  particle: {fileID: 5660750495147854714, guid: 7c5f4d00f1eea4a449a2a73ec7904b82, type: 3}
   damageCooldown: 1
 --- !u!54 &8029085308491135720
 Rigidbody:

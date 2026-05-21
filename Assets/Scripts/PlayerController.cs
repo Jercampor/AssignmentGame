@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public int ammoRewardPerKill = 3;
     public int maxDashCharges = 2;
     public float dashRechargeTime = 5f;
+    public Transform innerTransform;
 
     private int currentDashCharges;
     private float dashRechargeTimer = 0f;
@@ -79,7 +80,7 @@ public class PlayerController : MonoBehaviour
             Vector3 lookDir = hit.point - transform.position;
             lookDir.y = 0f;
             if (lookDir != Vector3.zero)
-                transform.rotation = Quaternion.LookRotation(lookDir);
+                innerTransform.rotation = Quaternion.LookRotation(lookDir);
         }
     }
 
@@ -112,7 +113,7 @@ public class PlayerController : MonoBehaviour
         currentDashCharges--;
         UpdateDashUI();
         dashCooldownTimer = dashCooldown;
-        rb.linearVelocity = transform.forward * dashSpeed;
+        rb.linearVelocity = innerTransform.forward * dashSpeed;
         yield return new WaitForSeconds(dashDuration + 0.1f);
         isDashing = false;
     }
