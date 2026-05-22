@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     public ParticleSystem particle;
+    public float mapBoundaryX = 105f;
+    public float mapBoundaryZ = 129f;
 
     void Start()
     {
@@ -44,17 +46,25 @@ public class Enemy : MonoBehaviour
             }
         }
         
+        if (transform.position.x > mapBoundaryX || transform.position.x < -mapBoundaryX ||
+            transform.position.z > mapBoundaryZ || transform.position.z < -mapBoundaryZ)
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
+        AudioManager.instance.PlayEnemyHit();
         healthBar.value = health;
         animator.SetTrigger("Hit");
         if (health <= 0)
         {
             ParticleSystem enemydie = Instantiate(particle, transform.position, Quaternion.identity);
             enemydie.Play();
+            Destroy(enemydie.gameObject, enemydie.main.duration);
             GameManager.instance.AddScore(scoreValue);
             Destroy(gameObject);
             

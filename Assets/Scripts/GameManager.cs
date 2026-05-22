@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         gameActive = false;
+        AudioManager.instance.PlayGameOver();
         Time.timeScale = 0f;
         gameOverPanel.SetActive(true);
         gameOverScoreText.text = "Score: " + score;

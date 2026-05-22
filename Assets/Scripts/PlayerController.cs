@@ -1,8 +1,9 @@
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
+    
     public float moveSpeed = 5f;
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public int ammoRewardPerKill = 3;
     public int maxDashCharges = 2;
     public float dashRechargeTime = 5f;
+    public Slider dashSlider;
     public Transform innerTransform;
 
     private int currentDashCharges;
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI dashText;
     public TextMeshProUGUI modeText;
     
+    public ParticleSystem particle;
     public GameObject gun;
     public GameObject axe;
 
@@ -33,9 +36,11 @@ public class PlayerController : MonoBehaviour
         playerShooting = GetComponent<PlayerShooting>();
         currentDashCharges = maxDashCharges;
         UpdateDashUI();
-        modeText.text = "Mode: Gun";
+        
         axe.SetActive(false);
         gun.SetActive(true);
+        dashSlider.maxValue = maxDashCharges;
+        dashSlider.value = currentDashCharges;
     }
 
     void Update()
@@ -56,7 +61,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             isMeleeMode = !isMeleeMode;
-            modeText.text = isMeleeMode ? "Mode: Melee" : "Mode: Gun";
             gun.SetActive(!isMeleeMode);
             axe.SetActive(isMeleeMode);
         }
@@ -64,6 +68,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && dashCooldownTimer <= 0f && !isDashing && currentDashCharges > 0)
         {
             StartCoroutine(Dash());
+            AudioManager.instance.PlayDash();
+            ParticleSystem dash = Instantiate(particle, transform.position, innerTransform.rotation * Quaternion.Euler(0, 180f, 0));
+            dash.Play();
+            Destroy(dash.gameObject, dash.main.duration);
         }
 
         if (!isDashing)
@@ -104,7 +112,8 @@ public class PlayerController : MonoBehaviour
 
     void UpdateDashUI()
     {
-        dashText.text = "Dashes: " + currentDashCharges + " / " + maxDashCharges;
+        dashSlider.maxValue = maxDashCharges;
+        dashSlider.value = currentDashCharges;
     }
 
     System.Collections.IEnumerator Dash()

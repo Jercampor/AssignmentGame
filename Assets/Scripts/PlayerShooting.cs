@@ -1,11 +1,19 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+
 
 public class PlayerShooting : MonoBehaviour
 {
+    
+    public Image ammoCircle;
+    public Image reserveIndicator;
     public GameObject bulletPrefab;
     public float bulletSpeed = 20f;
     public Transform firePoint;
+    
+    public Light muzzleLight;
+    public float muzzleFlashDuration = 0.5f;
     
     public GameObject grenadePrefab;
     public float throwForce = 15f;
@@ -37,6 +45,8 @@ public class PlayerShooting : MonoBehaviour
         reserveAmmo = startingReserveAmmo;
         UpdateAmmoUI();
         playerController = GetComponent<PlayerController>();
+        muzzleLight.enabled = true;
+        muzzleLight.enabled = false;
     }
 
     void Update()
@@ -48,8 +58,6 @@ public class PlayerShooting : MonoBehaviour
         {
             if (reserveAmmo > 0 && currentAmmo < maxAmmo)
                 StartCoroutine(Reload());
-            else if (reserveAmmo <= 0)
-                ammoText.text = "No reserve ammo!";
         }
 
         if (activePowerUp == PowerUpType.Machinegun)
@@ -75,8 +83,6 @@ public class PlayerShooting : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && currentAmmo > 0)
                 Shoot();
-            else if (Input.GetMouseButtonDown(0) && currentAmmo <= 0)
-                ammoText.text = "No ammo! Press R to reload";
         }
         
         
@@ -87,15 +93,20 @@ public class PlayerShooting : MonoBehaviour
     void Shoot()
     {
         currentAmmo--;
+        AudioManager.instance.PlayGunshot();
+        StartCoroutine(MuzzleFlash());
         UpdateAmmoUI();
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bullet.GetComponent<Rigidbody>().linearVelocity = firePoint.forward * bulletSpeed;
         Destroy(bullet, 3f);
+        
     }
 
     void ShootShotgun()
     {
         currentAmmo--;
+        StartCoroutine(MuzzleFlash());
+        AudioManager.instance.PlayGunshot();
         UpdateAmmoUI();
         for (int i = 0; i < shotgunPellets; i++)
         {
@@ -110,7 +121,6 @@ public class PlayerShooting : MonoBehaviour
     System.Collections.IEnumerator Reload()
     {
         isReloading = true;
-        ammoText.text = "Reloading...";
         yield return new WaitForSeconds(reloadTime);
         int ammoNeeded = maxAmmo - currentAmmo;
         int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo);
@@ -118,6 +128,15 @@ public class PlayerShooting : MonoBehaviour
         reserveAmmo -= ammoToReload;
         isReloading = false;
         UpdateAmmoUI();
+    }
+    
+    System.Collections.IEnumerator MuzzleFlash()
+    {
+        Debug.Log("Muzzle flash started");
+        muzzleLight.enabled = true;
+        yield return new WaitForSeconds(muzzleFlashDuration);
+        muzzleLight.enabled = false;
+        Debug.Log("Muzzle flash ended");
     }
 
     public void AddAmmo(int amount)
@@ -133,7 +152,8 @@ public class PlayerShooting : MonoBehaviour
 
     void UpdateAmmoUI()
     {
-        ammoText.text = "Ammo: " + currentAmmo + " / " + reserveAmmo;
+        ammoCircle.fillAmount = (float)currentAmmo / maxAmmo;
+        reserveIndicator.color = reserveAmmo > 0 ? Color.yellow : Color.red;
     }
     
     public void ThrowGrenade()

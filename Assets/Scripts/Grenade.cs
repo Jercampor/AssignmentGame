@@ -6,6 +6,9 @@ public class Grenade : MonoBehaviour
     public int explosionDamage = 999;
     public float fuseTime = 2f;
     private float timer;
+    private bool hasExploded = false;
+    public Material explosionMaterial;
+
 
     void Update()
     {
@@ -18,14 +21,19 @@ public class Grenade : MonoBehaviour
 
     void Explode()
     {
+        if (hasExploded) return;
+        hasExploded = true;
+
+        AudioManager.instance.PlayExplosion();
+        Camera.main.GetComponent<CameraFollow>().Shake(0.5f, 1f);
+        Debug.Log("Shake called!");
+        
         GameObject explosion = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         explosion.transform.position = transform.position;
         explosion.transform.localScale = Vector3.one * explosionRadius * 2f;
 
-        Material mat = explosion.GetComponent<Renderer>().material;
-        mat.color = new Color(1f, 0.5f, 0f);
-        mat.EnableKeyword("_EMISSION");
-        mat.SetColor("_EmissionColor", new Color(1f, 0.5f, 0f) * 3f);
+        Renderer rend = explosion.GetComponent<Renderer>();
+        rend.material = explosionMaterial;
 
         Destroy(explosion.GetComponent<Collider>());
         Destroy(explosion, 0.2f);
@@ -45,10 +53,8 @@ public class Grenade : MonoBehaviour
         Destroy(gameObject);
     }
 
-
     void OnCollisionEnter(Collision collision)
     {
-        // Ignore player collision
         if (collision.gameObject.CompareTag("Player")) return;
         Explode();
     }
